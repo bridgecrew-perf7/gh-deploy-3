@@ -17,3 +17,12 @@ jobs:
           --build-arg "VERSION=${IMAGE_TAG}" \
           --tag "${IMAGE_NAME}:${IMAGE_TAG}" \
           .
+    - uses: actions/github-script@v4.0.2
+      with:
+        script: |
+          github.repos.createDeployment({
+            "owner": "snarky",
+            "repo": "gh-deploy",
+            "ref": "main",
+            "environment": "qa",
+          });
