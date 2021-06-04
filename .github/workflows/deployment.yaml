@@ -7,7 +7,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - run: |
-        echo "HELLO"
+        echo "🚀 HELLO"
         echo "--"
         env
         echo "--"
@@ -17,7 +17,8 @@ jobs:
         echo "APP_VERSION: 0.1.0"
         echo "HELM CHART VERSION: ${{ github.event.deployment.payload.helm_chart_version }}"
         echo "ENVIRONMENT: ${{ github.event.deployment.environment }}"
-        sleep 10
+        sleep 30
+        echo "Done!"
         
     - uses: actions/github-script@v4.0.2
       with:
