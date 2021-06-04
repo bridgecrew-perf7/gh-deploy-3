@@ -9,4 +9,6 @@ jobs:
     - run: |
         echo "HELLO"
         env
-        echo ${{fromJSON(github.event)}}
+      env:
+       TOTO: ${{fromJSON(github.event)}}
+      
