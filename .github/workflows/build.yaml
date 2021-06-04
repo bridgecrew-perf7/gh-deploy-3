@@ -25,4 +25,5 @@ jobs:
             "repo": "gh-deploy",
             "ref": "main",
             "environment": "qa",
+            "required_contexts": [],
           });
