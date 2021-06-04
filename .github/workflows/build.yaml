@@ -20,7 +20,7 @@ jobs:
     - uses: actions/github-script@v4.0.2
       with:
         script: |
-          const result = github.repos.createDeployment({
+          const result = await github.repos.createDeployment({
             "owner": "snarky",
             "repo": "gh-deploy",
             "ref": "main",
