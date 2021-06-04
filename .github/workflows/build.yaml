@@ -24,7 +24,7 @@ jobs:
         github-token: ${{secrets.GH_TOKEN}}
         script: |
           const { HELM_CHART_VERSION } = process.env
-          const result = await github.repos.createDeployment({
+          const deployment = await github.repos.createDeployment({
             "owner": "snarky",
             "repo": "gh-deploy",
             "ref": "main",
@@ -34,4 +34,9 @@ jobs:
               "helm_chart_version": `${HELM_CHART_VERSION}`
             }
           });
-          console.log(result)
+          const deploymentStatus = await github.repos.createDeploymentStatus({
+            "owner": "snarky",
+            "repo": "gh-deploy",
+            "deployment_id": `${deployment.data.id}`,
+            "state": "in_progress",
+          });
