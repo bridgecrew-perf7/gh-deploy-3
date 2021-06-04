@@ -18,14 +18,20 @@ jobs:
           --tag "${IMAGE_NAME}:${IMAGE_TAG}" \
           .
     - uses: actions/github-script@v4.0.2
+      env:
+        HELM_CHART_VERSION: "0.1.0"
       with:
         github-token: ${{secrets.GH_TOKEN}}
         script: |
+          const { HELM_CHART_VERSION } = process.env
           const result = await github.repos.createDeployment({
             "owner": "snarky",
             "repo": "gh-deploy",
             "ref": "main",
             "environment": "qa",
             "required_contexts": [],
+            "payload": {
+              "helm_chart_version": `${HELM_CHART_VERSION}`
+            }
           });
           console.log(result)
