@@ -38,5 +38,8 @@ jobs:
             "owner": "snarky",
             "repo": "gh-deploy",
             "deployment_id": `${deployment.data.id}`,
+            "mediaType": {
+              "previews": ["flash"],
+            },
             "state": "in_progress",
           });
