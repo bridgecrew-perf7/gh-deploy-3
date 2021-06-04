@@ -9,4 +9,4 @@ jobs:
     - run: |
         echo "HELLO"
         env
-        jq . "${GITHUB_EVENT_PATH}"
+        echo "HELM CHART VERSION: $(jq -r '.deployment.payload.helm_chart_version' "${GITHUB_EVENT_PATH}")"
