@@ -9,5 +9,4 @@ jobs:
     - run: |
         echo "HELLO"
         env
-      env:
-       TOTO: "${{fromJSON(github.event)}}"      
+        jq . "${GITHUB_EVENT_PATH}"
