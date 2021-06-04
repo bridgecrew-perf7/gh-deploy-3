@@ -34,12 +34,12 @@ jobs:
               "helm_chart_version": `${HELM_CHART_VERSION}`
             }
           });
-          const deploymentStatus = await github.repos.createDeploymentStatus({
-            "owner": "snarky",
-            "repo": "gh-deploy",
-            "deployment_id": `${deployment.data.id}`,
-            "mediaType": {
-              "previews": ["flash"],
-            },
-            "state": "in_progress",
-          });
+        #const deploymentStatus = await github.repos.createDeploymentStatus({
+        #    "owner": "snarky",
+        #    "repo": "gh-deploy",
+        #    "deployment_id": `${deployment.data.id}`,
+        #    "mediaType": {
+        #      "previews": ["flash"],
+        #    },
+        #    "state": "in_progress",
+        #  });
