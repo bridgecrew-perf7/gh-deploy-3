@@ -17,4 +17,16 @@ jobs:
         echo "APP_VERSION: 0.1.0"
         echo "HELM CHART VERSION: ${{ github.event.deployment.payload.helm_chart_version }}"
         echo "ENVIRONMENT: ${{ github.event.deployment.environment }}"
+        sleep 10
+        
+    - uses: actions/github-script@v4.0.2
+      with:
+        github-token: ${{secrets.GH_TOKEN}}
+        script: |
+          const result = await github.repos.createDeploymentStatus({
+            "owner": "snarky",
+            "repo": "gh-deploy",
+            "deployment_id": "${{ github.event.deployment.id }}",
+            "state": "failure",
+          });
         
