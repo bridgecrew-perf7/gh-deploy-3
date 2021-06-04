@@ -5,7 +5,21 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+
+    - uses: actions/github-script@v4.0.2
+      with:
+        github-token: ${{secrets.GH_TOKEN}}
+        script: |
+          const result = await github.repos.createDeploymentStatus({
+            "owner": "snarky",
+            "repo": "gh-deploy",
+            "deployment_id": "${{ github.event.deployment.id }}",
+            "mediaType": {
+              "previews": ["flash"],
+            },
+            "state": "in_progress",
+          });
+          
     - run: |
         echo "🚀 HELLO"
         echo "--"
@@ -30,4 +44,3 @@ jobs:
             "deployment_id": "${{ github.event.deployment.id }}",
             "state": "failure",
           });
-        
