@@ -9,3 +9,4 @@ jobs:
     - run: |
         echo "HELLO"
         env
+        echo ${{fromJSON(github.event)}}
