@@ -6,22 +6,44 @@ on:
     - '[0-9]+.[0-9]+.[0-9]+'
 
 jobs:
-  build:
+  check-requirements:
+    name: Check requirements
     runs-on: ubuntu-latest
+    outputs:
+      app_name: ${{ steps.analyze-package-json.outputs.name }}
+      app_version: ${{ steps.analyze-package-json.outputs.version }}
     steps:
     - uses: actions/checkout@v2
     
+    - name: analyze-package-json 
+      run: |
+        echo ::set-output name=name::$(cat package.json | jq -r -c '.name')
+        echo ::set-output name=version::$(cat package.json | jq -r -c '.version')
+        
+  build:
+    runs-on: ubuntu-latest
+    needs: check-requirements
+    concurrency: 
+      group: "gh-deploy-a"
+      cancel-in-progress: false
+    steps:
+    - uses: actions/checkout@v2
     # DOCKER IMAGE
     - run: |
-        IMAGE_NAME="snarky/gh-deploy"
+        APP_NAME="${{ needs.check-requirements.outputs.app_name }}"
+        APP_VERSION="${{ needs.check-requirements.outputs.app_version }}"
+        echo "BUILD DOCKER IMAGE ${{ needs.check-requirements.outputs.name }}:${{ needs.check-requirements.outputs.version }}"    
+        IMAGE_NAME="snarky/${APP_NAME}"
         IMAGE_TAG="$(git describe --abbrev=0 --tags)"
         DOCKER_BUILDKIT=1 docker build \
           --build-arg "VERSION=${IMAGE_TAG}" \
           --tag "${IMAGE_NAME}:${IMAGE_TAG}" \
           .
+          
     # HELM CREATE PACKAGE
-    #-
-    
+    - run: |
+        sleep 30
+        
     # TRIGGER DEPLOYMENT
     - uses: actions/github-script@v4.0.2
       env:
