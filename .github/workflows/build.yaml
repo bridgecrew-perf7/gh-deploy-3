@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    
+    # DOCKER IMAGE
     - run: |
         IMAGE_NAME="snarky/gh-deploy"
         IMAGE_TAG="$(git describe --abbrev=0 --tags)"
@@ -17,6 +19,10 @@ jobs:
           --build-arg "VERSION=${IMAGE_TAG}" \
           --tag "${IMAGE_NAME}:${IMAGE_TAG}" \
           .
+    # HELM CREATE PACKAGE
+    #-
+    
+    # TRIGGER DEPLOYMENT
     - uses: actions/github-script@v4.0.2
       env:
         HELM_CHART_VERSION: "0.1.0"
@@ -34,12 +40,3 @@ jobs:
               "helm_chart_version": `${HELM_CHART_VERSION}`
             }
           });
-        #const deploymentStatus = await github.repos.createDeploymentStatus({
-        #    "owner": "snarky",
-        #    "repo": "gh-deploy",
-        #    "deployment_id": `${deployment.data.id}`,
-        #    "mediaType": {
-        #      "previews": ["flash"],
-        #    },
-        #    "state": "in_progress",
-        #  });
