@@ -31,6 +31,7 @@ jobs:
     # DOCKER IMAGE
     - run: |
         APP_NAME="${{ needs.check-requirements.outputs.app_name }}"
+        APP_NAME="toto"
         APP_VERSION="${{ needs.check-requirements.outputs.app_version }}"
         echo "BUILD DOCKER IMAGE ${{ needs.check-requirements.outputs.name }}:${{ needs.check-requirements.outputs.version }}"    
         IMAGE_NAME="snarky/${APP_NAME}"
