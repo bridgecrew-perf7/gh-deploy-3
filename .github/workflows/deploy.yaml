@@ -33,19 +33,13 @@ jobs:
         echo "ENVIRONMENT: ${{ github.event.deployment.environment }}"
         sleep 30
         echo "Done!"
-        exit "$(shuf -i 0-1 -n 1)"
+        exit 1
+        
+    # exit "$(shuf -i 0-1 -n 1)"
 
-    - name: Update Deployment Status
-      if: always()
-      uses: octokit/request-action@v2.x
-      with:
-        route: POST /repos/:repository/deployments/:deployment_id/statuses
-        repository: ${{ github.repository }}
-        deployment_id: ${{ github.event.deployment.id }}
-        mediaType: '{"previews": ["ant-man", "flash"]}'
-        state: failure
-        environment_url: 'https://hello-uat.bc.com'
-
+    - if: always()
+      run: |
+        echo "ALWAYS"
     #- uses: actions/github-script@v4.0.2
     #  with:
     #    github-token: ${{secrets.GH_TOKEN}}
