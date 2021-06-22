@@ -20,7 +20,8 @@ jobs:
             "state": "in_progress",
           });
           
-    - run: |
+    - id: deploy 
+      run: |
         echo "🚀 HELLO"
         echo "--"
         env
@@ -40,6 +41,7 @@ jobs:
     - if: always()
       run: |
         echo "ALWAYS"
+        echo "DEPLOY STATUS: ${{ job.steps.deploy.status }}"
     #- uses: actions/github-script@v4.0.2
     #  with:
     #    github-token: ${{secrets.GH_TOKEN}}
