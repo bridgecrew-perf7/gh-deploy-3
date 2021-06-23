@@ -5,6 +5,7 @@ on:
 
 jobs:
   deploy:
+    name: "Deploy '${{ github.event.deployment.payload.application_name }}:${{ github.event.deployment.payload.application_version }}' (helm: '${{ github.event.deployment.payload.helm_chart }}:${{ github.event.deployment.payload.helm_chart_version }}') on '${{ github.event.deployment.environment }}' environment" 
     runs-on: ubuntu-latest
     steps:
 
