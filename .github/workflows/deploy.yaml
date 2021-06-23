@@ -28,24 +28,24 @@ jobs:
         echo "--"
         echo "HELM CHART VERSION: $(jq -r '.' "${GITHUB_EVENT_PATH}")"
         echo "--"
-        echo "APP_NAME: HELLO"
-        echo "APP_VERSION: 0.1.0"
+        echo "APP  NAME: ${{ github.event.deployment.payload.application_name }}""
+        echo "APP VERSION: ${{ github.event.deployment.payload.application_version }}"
+        echo "HELM CHART: ${{ github.event.deployment.payload.helm_chart }}"
         echo "HELM CHART VERSION: ${{ github.event.deployment.payload.helm_chart_version }}"
         echo "ENVIRONMENT: ${{ github.event.deployment.environment }}"
         sleep 30
         echo "Done!"
-        exit 1
+        exit 0
+        
+    - name: "Deploy '${{ github.event.deployment.payload.application_version }}:${ github.event.deployment.payload.application_version }}' (helm: '${{ github.event.deployment.payload.helm_chart }}:${{ github.event.deployment.payload.helm_chart_version }}') on '${{ github.event.deployment.environment }}' environment " 
+      run: |
+        dfdf
         
     # exit "$(shuf -i 0-1 -n 1)"
 
     - if: always()
       run: |
         echo "ALWAYS"
-        echo "DEPLOY STATUS: ${{ job.steps.deploy.outputs.status }}"
-        echo "job.steps.deploy.outcome: ${{ job.steps.deploy.outcome }}"
-        echo "job.steps.deploy.conclusion: ${{ job.steps.deploy.conclusion }}"
-        echo "job.steps: ${{ toJSON(job.steps) }}"
-        echo "job.steps: ${{ toJSON(job.steps.deploy) }}"
         echo "job: ${{ toJSON(job) }}"
     #- uses: actions/github-script@v4.0.2
     #  with:
