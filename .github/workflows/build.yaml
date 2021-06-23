@@ -17,8 +17,10 @@ jobs:
     
     - name: analyze-package-json 
       run: |
-        echo ::set-output name=name::$(cat package.json | jq -r -c '.name')
-        echo ::set-output name=version::$(cat package.json | jq -r -c '.version')
+        # echo ::set-output name=name::$(cat package.json | jq -r -c '.name')
+        # echo ::set-output name=version::$(cat package.json | jq -r -c '.version')
+        echo ::set-output name=name::toto
+        echo ::set-output name=version::0.1.0
         
   build:
     runs-on: ubuntu-latest
@@ -31,7 +33,6 @@ jobs:
     # DOCKER IMAGE
     - run: |
         APP_NAME="${{ needs.check-requirements.outputs.app_name }}"
-        APP_NAME="toto"
         APP_VERSION="${{ needs.check-requirements.outputs.app_version }}"
         echo "BUILD DOCKER IMAGE ${{ needs.check-requirements.outputs.name }}:${{ needs.check-requirements.outputs.version }}"    
         IMAGE_NAME="snarky/${APP_NAME}"
@@ -48,7 +49,8 @@ jobs:
     # TRIGGER DEPLOYMENT
     - uses: actions/github-script@v4.0.2
       env:
-        APPLICATION_VERSION: "0.1.0"
+        APPLICATION_NAME: "${{ needs.check-requirements.outputs.app_version }}"
+        APPLICATION_VERSION: "${{ needs.check-requirements.outputs.app_version }}"
         HELM_CHART_VERSION: "0.1.1"
       with:
         github-token: ${{secrets.GH_TOKEN}}
