@@ -32,9 +32,9 @@ jobs:
     - uses: actions/checkout@v2
     # DOCKER IMAGE
     - run: |
-        APP_NAME="${{ needs.check-requirements.outputs.app_name }}"
-        APP_VERSION="${{ needs.check-requirements.outputs.app_version }}"
-        echo "BUILD DOCKER IMAGE ${{ needs.check-requirements.outputs.name }}:${{ needs.check-requirements.outputs.version }}"    
+        APP_NAME="toto"
+        APP_VERSION="0.1.0"
+        echo "BUILD DOCKER IMAGE FROM ${APP_NAME}:${APP_VERSION}"
         IMAGE_NAME="snarky/${APP_NAME}"
         IMAGE_TAG="$(git describe --abbrev=0 --tags)"
         DOCKER_BUILDKIT=1 docker build \
@@ -49,8 +49,8 @@ jobs:
     # TRIGGER DEPLOYMENT
     - uses: actions/github-script@v4.0.2
       env:
-        APPLICATION_NAME: "${{ needs.check-requirements.outputs.app_name }}"
-        APPLICATION_VERSION: "${{ needs.check-requirements.outputs.app_version }}"
+        APPLICATION_NAME: "toto"
+        APPLICATION_VERSION: "0.1.0"
         HELM_CHART_VERSION: "0.1.1"
       with:
         github-token: ${{secrets.GH_TOKEN}}
