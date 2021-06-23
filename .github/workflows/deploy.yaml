@@ -41,7 +41,11 @@ jobs:
     - if: always()
       run: |
         echo "ALWAYS"
-        echo "DEPLOY STATUS: ${{ job.steps.deploy.status }}"
+        echo "DEPLOY STATUS: ${{ job.steps.deploy.outputs.status }}"
+        echo "job.steps.deploy.outcome: ${{ job.steps.deploy.outcome }}"
+        echo "job.steps.deploy.conclusion: ${{ job.steps.deploy.conclusion }}"
+        echo "job.steps: ${{ toJSON(job.steps) }}"
+        echo "job.steps: ${{ toJSON(job.steps.deploy) }}"
     #- uses: actions/github-script@v4.0.2
     #  with:
     #    github-token: ${{secrets.GH_TOKEN}}
