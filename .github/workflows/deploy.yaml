@@ -1,6 +1,7 @@
 on:
   deployment:
 
+name: "Deploy '${{ github.event.deployment.payload.application_name }} on '${{ github.event.deployment.environment }}' environment"
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -37,7 +38,7 @@ jobs:
         echo "Done!"
         exit 0
         
-    - name: "Deploy '${{ github.event.deployment.payload.application_name }}:${{ github.event.deployment.payload.application_version }}' (helm: '${{ github.event.deployment.payload.helm_chart }}:${{ github.event.deployment.payload.helm_chart_version }}') on '${{ github.event.deployment.environment }}' environment " 
+    - name: "Deploy '${{ github.event.deployment.payload.application_name }}:${{ github.event.deployment.payload.application_version }}' (helm: '${{ github.event.deployment.payload.helm_chart }}:${{ github.event.deployment.payload.helm_chart_version }}') on '${{ github.event.deployment.environment }}' environment" 
       run: |
         dfdf
         
