@@ -30,7 +30,7 @@ jobs:
         echo "--"
         echo "HELM CHART VERSION: $(jq -r '.' "${GITHUB_EVENT_PATH}")"
         echo "--"
-        echo "APP  NAME: ${{ github.event.deployment.payload.application_name }}""
+        echo "APP  NAME: ${{ github.event.deployment.payload.application_name }}"
         echo "APP VERSION: ${{ github.event.deployment.payload.application_version }}"
         echo "HELM CHART: ${{ github.event.deployment.payload.helm_chart }}"
         echo "HELM CHART VERSION: ${{ github.event.deployment.payload.helm_chart_version }}"
