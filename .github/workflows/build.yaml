@@ -49,13 +49,13 @@ jobs:
     # TRIGGER DEPLOYMENT
     - uses: actions/github-script@v4.0.2
       env:
-        APPLICATION_NAME: "${{ needs.check-requirements.outputs.app_version }}"
+        APPLICATION_NAME: "${{ needs.check-requirements.outputs.app_name }}"
         APPLICATION_VERSION: "${{ needs.check-requirements.outputs.app_version }}"
         HELM_CHART_VERSION: "0.1.1"
       with:
         github-token: ${{secrets.GH_TOKEN}}
         script: |
-          const { HELM_CHART_VERSION } = process.env
+          const { APPLICATION_NAME, APPLICATION_VERSION, HELM_CHART_VERSION } = process.env
           const deployment = await github.repos.createDeployment({
             "owner": "snarky",
             "repo": "gh-deploy",
@@ -63,7 +63,7 @@ jobs:
             "environment": "qa",
             "required_contexts": [],
             "payload": {
-              "application_name": 'toto',
+              "application_name": '${APPLICATION_NAME}',
               "application_version": `${APPLICATION_VERSION}`,
               "helm_chart": 'toto',
               "helm_chart_version": `${HELM_CHART_VERSION}`
