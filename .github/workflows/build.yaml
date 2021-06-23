@@ -61,9 +61,9 @@ jobs:
             "environment": "qa",
             "required_contexts": [],
             "payload": {
-              "application_name": 'toto'
-              "application_version": `${APPLICATION_VERSION}`
-              "helm_chart": 'toto'
+              "application_name": 'toto',
+              "application_version": `${APPLICATION_VERSION}`,
+              "helm_chart": 'toto',
               "helm_chart_version": `${HELM_CHART_VERSION}`
             }
           });
