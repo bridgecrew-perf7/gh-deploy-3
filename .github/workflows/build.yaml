@@ -42,8 +42,8 @@ jobs:
           .
           
     # HELM CREATE PACKAGE
-    - run: |
-        sleep 30
+    #- run: |
+    #    sleep 30
         
     # TRIGGER DEPLOYMENT
     - uses: actions/github-script@v4.0.2
