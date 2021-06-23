@@ -46,6 +46,7 @@ jobs:
         echo "job.steps.deploy.conclusion: ${{ job.steps.deploy.conclusion }}"
         echo "job.steps: ${{ toJSON(job.steps) }}"
         echo "job.steps: ${{ toJSON(job.steps.deploy) }}"
+        echo "job: ${{ toJSON(job) }}"
     #- uses: actions/github-script@v4.0.2
     #  with:
     #    github-token: ${{secrets.GH_TOKEN}}
