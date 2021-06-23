@@ -63,7 +63,7 @@ jobs:
             "environment": "qa",
             "required_contexts": [],
             "payload": {
-              "application_name": '${APPLICATION_NAME}',
+              "application_name": '${APPLICATION_NAME}`,
               "application_version": `${APPLICATION_VERSION}`,
               "helm_chart": 'toto',
               "helm_chart_version": `${HELM_CHART_VERSION}`
