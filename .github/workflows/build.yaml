@@ -25,6 +25,7 @@ jobs:
         
     - id: define-env
       run: |
+        git log
         APP_ENVIRONMENT_GROUP=$([[ $(git describe --exact-match) ]] && echo 'preprod' || echo 'uat')
         echo ::set-output name=app_env_group::${APP_ENVIRONMENT_GROUP}
         echo ::set-output name=app_envs::$(jq --arg APP_ENVIRONMENT_GROUP "${APP_ENVIRONMENT_GROUP}" -ncr '[{"uat": ["uat", "uat2"], "preprod": ["preprod", "staging"]}] | .[0][$APP_ENVIRONMENT_GROUP]')
