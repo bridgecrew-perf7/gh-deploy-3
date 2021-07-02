@@ -24,7 +24,7 @@ jobs:
         
     - id: define-env
       run: |
-        echo ::set-output name=app_envs::$(jq -ncr '[{"uat": ["uat", "uat2"], "preprod": ["preprod", "staging"]}] | .[0]["preprod"])'
+        echo ::set-output name=app_envs::$(jq -ncr '[{"uat": ["uat", "uat2"], "preprod": ["preprod", "staging"]}] | .[0]["preprod"]')
         
   build:
     runs-on: ubuntu-latest
