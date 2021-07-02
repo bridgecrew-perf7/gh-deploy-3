@@ -12,7 +12,7 @@ jobs:
       app_name: ${{ steps.analyze-package-json.outputs.name }}
       app_version: ${{ steps.analyze-package-json.outputs.version }}
       app_envs: ${{ steps.define-env.outputs.app_envs }}
-      app_env: ${{ steps.define-env.outputs.app_env }}
+      app_env_group: ${{ steps.define-env.outputs.app_env_group }}
     steps:
     - uses: actions/checkout@v2
     
@@ -25,9 +25,9 @@ jobs:
         
     - id: define-env
       run: |
-        APP_ENVIRONMENT=uat
-        echo ::set-output name=app_envs::${APP_ENVIRONMENT}
-        echo ::set-output name=app_envs::$(jq -ncr '[{"uat": ["uat", "uat2"], "preprod": ["preprod", "staging"]}] | .[0]["${APP_ENVIRONMENT}"]')
+        APP_ENVIRONMENT_GROUP=uat
+        echo ::set-output name=app_env_group::${APP_ENVIRONMENT_GROUP}
+        echo ::set-output name=app_envs::$(jq -ncr '[{"uat": ["uat", "uat2"], "preprod": ["preprod", "staging"]}] | .[0]["${APP_ENVIRONMENT_GROUP}"]')
         
   build:
     runs-on: ubuntu-latest
