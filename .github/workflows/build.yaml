@@ -7,65 +7,86 @@ on:
 
 jobs:
   check-requirements:
-    name: Check requirements
     runs-on: ubuntu-latest
     outputs:
       app_name: ${{ steps.analyze-package-json.outputs.name }}
       app_version: ${{ steps.analyze-package-json.outputs.version }}
+      app_envs: ${{ steps.define-env.outputs.app_envs }}
     steps:
     - uses: actions/checkout@v2
     
-    - name: analyze-package-json 
+    - id: analyze-package-json 
       run: |
         # echo ::set-output name=name::$(cat package.json | jq -r -c '.name')
         # echo ::set-output name=version::$(cat package.json | jq -r -c '.version')
         echo ::set-output name=name::toto
         echo ::set-output name=version::0.1.0
         
+    - id: define-env
+      run: |
+        echo ::set-output name=app_envs::$(jq -ncr '[{"uat": ["uat", "uat2"], "preprod": ["preprod", "staging"]}] | .[0]["preprod"])'
+        
   build:
     runs-on: ubuntu-latest
     needs: check-requirements
-    concurrency: 
-      group: "gh-deploy-a"
-      cancel-in-progress: false
+    #concurrency: 
+    #  group: "gh-deploy-a"
+    #  cancel-in-progress: false
     steps:
     - uses: actions/checkout@v2
-    # DOCKER IMAGE
     - run: |
-        APP_NAME="toto"
-        APP_VERSION="0.1.0"
-        echo "BUILD DOCKER IMAGE FROM ${APP_NAME}:${APP_VERSION}"
-        IMAGE_NAME="snarky/${APP_NAME}"
-        IMAGE_TAG="$(git describe --abbrev=0 --tags)"
-        DOCKER_BUILDKIT=1 docker build \
-          --build-arg "VERSION=${IMAGE_TAG}" \
-          --tag "${IMAGE_NAME}:${IMAGE_TAG}" \
-          .
+        echo "Build"
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [check-requirements, build]
+    # Check if node_versions matrix is not empty to avoid error message:
+    # "Error when evaluating 'strategy' for job '?'. (Line: ?, Col: ?): Matrix vector '?' does not contain any values"
+    if: ${{ needs.check-requirements.outputs.app_envs != '[]' }}
+    strategy:
+      matrix:
+        app_env: ${{ fromJson(needs.check-requirements.outputs.app_envs) }}
+    steps:
+    - uses: actions/checkout@v2
+    - run: |
+        echo "Deploy: ${{ matrix.app_env }}"
+
+    # DOCKER IMAGE
+    #- run: |
+    #    APP_NAME="toto"
+    #    APP_VERSION="0.1.0"
+    #    echo "BUILD DOCKER IMAGE FROM ${APP_NAME}:${APP_VERSION}"
+    #    IMAGE_NAME="snarky/${APP_NAME}"
+    #    IMAGE_TAG="$(git describe --abbrev=0 --tags)"
+    #    DOCKER_BUILDKIT=1 docker build \
+    #      --build-arg "VERSION=${IMAGE_TAG}" \
+    #      --tag "${IMAGE_NAME}:${IMAGE_TAG}" \
+    #
           
     # HELM CREATE PACKAGE
     #- run: |
     #    sleep 30
         
     # TRIGGER DEPLOYMENT
-    - uses: actions/github-script@v4.0.2
-      env:
-        APPLICATION_NAME: "toto"
-        APPLICATION_VERSION: "0.1.0"
-        HELM_CHART_VERSION: "0.1.1"
-      with:
-        github-token: ${{secrets.GH_TOKEN}}
-        script: |
-          const { APPLICATION_NAME, APPLICATION_VERSION, HELM_CHART_VERSION } = process.env
-          const deployment = await github.repos.createDeployment({
-            "owner": "snarky",
-            "repo": "gh-deploy",
-            "ref": "main",
-            "environment": "qa",
-            "required_contexts": [],
-            "payload": {
-              "application_name": `${APPLICATION_NAME}`,
-              "application_version": `${APPLICATION_VERSION}`,
-              "helm_chart": 'toto',
-              "helm_chart_version": `${HELM_CHART_VERSION}`
-            }
-          });
+    #- uses: actions/github-script@v4.0.2
+    #  env:
+    #    APPLICATION_NAME: "toto"
+    #    APPLICATION_VERSION: "0.1.0"
+    #    HELM_CHART_VERSION: "0.1.1"
+    #  with:
+    #    github-token: ${{secrets.GH_TOKEN}}
+    #    script: |
+    #      const { APPLICATION_NAME, APPLICATION_VERSION, HELM_CHART_VERSION } = process.env
+    #      const deployment = await github.repos.createDeployment({
+    #        "owner": "snarky",
+    #        "repo": "gh-deploy",
+    #        "ref": "main",
+    #        "environment": "qa",
+    #        "required_contexts": [],
+    #        "payload": {
+    #          "application_name": `${APPLICATION_NAME}`,
+    #          "application_version": `${APPLICATION_VERSION}`,
+    #          "helm_chart": 'toto',
+    #          "helm_chart_version": `${HELM_CHART_VERSION}`
+    #        }
+    #      });
