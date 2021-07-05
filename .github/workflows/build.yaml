@@ -15,7 +15,7 @@ jobs:
       app_env_group: ${{ steps.define-env.outputs.app_env_group }}
     steps:
     - uses: actions/checkout@v2
-      depth: 0
+      fetch-depth: 0
 
     - id: analyze-package-json
       run: |
