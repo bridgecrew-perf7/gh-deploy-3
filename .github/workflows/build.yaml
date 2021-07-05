@@ -4,7 +4,7 @@ on:
     #- $default-branch
     #tags:
     #- '[0-9]+.[0-9]+.[0-9]+'
-  
+
 jobs:
   check-requirements:
     runs-on: ubuntu-latest
@@ -15,24 +15,31 @@ jobs:
       app_env_group: ${{ steps.define-env.outputs.app_env_group }}
     steps:
     - uses: actions/checkout@v2
-    
-    - id: analyze-package-json 
+      with:
+        fetch-depth: 0
+
+    - id: analyze-package-json
       run: |
         # echo ::set-output name=name::$(cat package.json | jq -r -c '.name')
         # echo ::set-output name=version::$(cat package.json | jq -r -c '.version')
         echo ::set-output name=name::toto
         echo ::set-output name=version::0.1.0
-        
+
     - id: define-env
       run: |
-        git log
-        APP_ENVIRONMENT_GROUP=$([[ "$(git rev-parse HEAD)" == "$(git rev-list -n 1 "$(git describe --abbrev=0 --tags)")" ]] && echo 'preprod' || echo 'uat')
+        set -x
+        echo '---'
+        git rev-parse HEAD
+        git describe --abbrev=0 --tags > /dev/null 2>&1 || true
+        git rev-list -n 1 "$(git describe --abbrev=0 --tags || true)" > /dev/null 2>&1
+        echo '---'
+        APP_ENVIRONMENT_GROUP=$([[ "$(git rev-parse HEAD)" == "$(git rev-list -n 1 "$(git describe --abbrev=0 --tags || true)")" ]] && echo 'preprod' || echo 'uat')
         echo ::set-output name=app_env_group::${APP_ENVIRONMENT_GROUP}
         echo ::set-output name=app_envs::$(jq --arg APP_ENVIRONMENT_GROUP "${APP_ENVIRONMENT_GROUP}" -ncr '[{"uat": ["uat", "uat2"], "preprod": ["preprod", "staging"]}] | .[0][$APP_ENVIRONMENT_GROUP]')
   build:
     runs-on: ubuntu-latest
     needs: check-requirements
-    #concurrency: 
+    #concurrency:
     #  group: "gh-deploy-a"
     #  cancel-in-progress: false
     steps:
@@ -65,11 +72,11 @@ jobs:
     #      --build-arg "VERSION=${IMAGE_TAG}" \
     #      --tag "${IMAGE_NAME}:${IMAGE_TAG}" \
     #
-          
+
     # HELM CREATE PACKAGE
     #- run: |
     #    sleep 30
-        
+
     # TRIGGER DEPLOYMENT
     #- uses: actions/github-script@v4.0.2
     #  env:
