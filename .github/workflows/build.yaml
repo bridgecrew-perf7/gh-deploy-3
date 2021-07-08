@@ -71,7 +71,7 @@ jobs:
         echo "Build app2"
     
   build_app3:
-    if: ${{ contains(needs.check-requirements.outputs.app_ids, 'app3') }}i
+    if: ${{ contains(needs.check-requirements.outputs.app_ids, 'app3') }}
     runs-on: ubuntu-latest
     needs: check-requirements
     #concurrency:
