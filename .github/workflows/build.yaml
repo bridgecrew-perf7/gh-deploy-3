@@ -84,7 +84,7 @@ jobs:
         app_env: ${{ fromJson(needs.check-requirements.outputs.app_envs) }}
     steps:
     - uses: actions/checkout@v2
-    - uses: actions/deploy@v1
+    - uses: ./.github/actions/deploy
       with:
         app_name: app2
         env_name: ${{ matrix.app_env }}
@@ -102,7 +102,7 @@ jobs:
         app_env: ${{ fromJson(needs.check-requirements.outputs.app_envs) }}
     steps:
     - uses: actions/checkout@v2
-    - uses: actions/deploy@v1
+    - uses: ./.github/actions/deploy
       with:
         app_name: app2
         env_name: ${{ matrix.app_env }}
@@ -121,7 +121,7 @@ jobs:
         app_env: ${{ fromJson(needs.check-requirements.outputs.app_envs) }}
     steps:
     - uses: actions/checkout@v2
-    - uses: actions/deploy@v1
+    - uses: ./.github/actions/deploy
       with:
         app_name: app3
         env_name: ${{ matrix.app_env }}
