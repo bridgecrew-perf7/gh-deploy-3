@@ -24,6 +24,5 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - uses: actions/checkout@v2
     - run: |
         echo "Deploy:  ${{ inputs.app_name }} on ${{ inputs.env_name }} (${{ inputs.helm_chart_name }}:${{ inputs.helm_chart_version }})"
