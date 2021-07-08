@@ -75,7 +75,7 @@ jobs:
 
   deploy_app1:
     runs-on: ubuntu-latest
-    needs: [check-requirements, build_app1]
+    needs: [build_app1]
     # Check if node_versions matrix is not empty to avoid error message:
     # "Error when evaluating 'strategy' for job '?'. (Line: ?, Col: ?): Matrix vector '?' does not contain any values"
     if: ${{ contains(needs.check-requirements.outputs.app_ids, 'app1') && needs.check-requirements.outputs.app_envs != '[]' }}
@@ -89,7 +89,7 @@ jobs:
 
   deploy_app2:
     runs-on: ubuntu-latest
-    needs: [check-requirements, build_app2]
+    needs: [build_app2]
     # Check if node_versions matrix is not empty to avoid error message:
     # "Error when evaluating 'strategy' for job '?'. (Line: ?, Col: ?): Matrix vector '?' does not contain any values"
     if: ${{ contains(needs.check-requirements.outputs.app_ids, 'app2') && needs.check-requirements.outputs.app_envs != '[]' }}
@@ -104,7 +104,7 @@ jobs:
 
   deploy_app3:
     runs-on: ubuntu-latest
-    needs: [check-requirements, build_app3]
+    needs: [build_app3]
     # Check if node_versions matrix is not empty to avoid error message:
     # "Error when evaluating 'strategy' for job '?'. (Line: ?, Col: ?): Matrix vector '?' does not contain any values"
     if: ${{ contains(needs.check-requirements.outputs.app_ids, 'app3') && needs.check-requirements.outputs.app_envs != '[]' }}
