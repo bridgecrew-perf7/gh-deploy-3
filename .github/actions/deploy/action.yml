@@ -24,5 +24,8 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - run: |
+    - shell: bash 
+      run: |
         echo "Deploy:  ${{ inputs.app_name }} on ${{ inputs.env_name }} (${{ inputs.helm_chart_name }}:${{ inputs.helm_chart_version }})"
+      
+      
