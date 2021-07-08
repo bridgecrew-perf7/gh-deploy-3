@@ -84,8 +84,12 @@ jobs:
         app_env: ${{ fromJson(needs.check-requirements.outputs.app_envs) }}
     steps:
     - uses: actions/checkout@v2
-    - run: |
-        echo "Deploy: app1 on ${{ matrix.app_env }}"
+    - uses: actions/deploy@v1
+      with:
+        app_name: app2
+        env_name: ${{ matrix.app_env }}
+        helm_chart_name: 'one-app2'
+        helm_chart_version: 1.0.1
 
   deploy_app2:
     runs-on: ubuntu-latest
@@ -98,8 +102,12 @@ jobs:
         app_env: ${{ fromJson(needs.check-requirements.outputs.app_envs) }}
     steps:
     - uses: actions/checkout@v2
-    - run: |
-        echo "Deploy: app2 on ${{ matrix.app_env }}"
+    - uses: actions/deploy@v1
+      with:
+        app_name: app2
+        env_name: ${{ matrix.app_env }}
+        helm_chart_name: 'one-app2'
+        helm_chart_version: 1.0.0
         
 
   deploy_app3:
@@ -113,8 +121,12 @@ jobs:
         app_env: ${{ fromJson(needs.check-requirements.outputs.app_envs) }}
     steps:
     - uses: actions/checkout@v2
-    - run: |
-        echo "Deploy: app3 on ${{ matrix.app_env }}"
+    - uses: actions/deploy@v1
+      with:
+        app_name: app3
+        env_name: ${{ matrix.app_env }}
+        helm_chart_name: 'one-app3'
+        helm_chart_version: 0.0.1
 
   #deploy:
   #  runs-on: ubuntu-latest
