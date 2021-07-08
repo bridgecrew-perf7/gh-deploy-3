@@ -1,0 +1,29 @@
+name: 'Trigger Deployment'
+description: 'Trigger an event to deploy an app in env'
+inputs:
+  app_name:
+    description: 'Application - Name'
+    required: true
+    default: ''
+  env_name:
+    description: 'Environment - Name'
+    required: true
+    default: ''
+  helm_chart_name:
+    description: 'Helm Chart - Name'
+    required: true
+    default: ''
+  helm_chart_version:
+    description: 'Helm Chart - Version'
+    required: true
+    default: ''
+outputs:
+  deploy_id:
+    description: "Deployment - ID"
+    value: 1
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v2
+    - run: |
+        echo "Deploy:  ${{ inputs.app_name }} on ${{ inputs.env_name }} (${{ inputs.helm_chart_name }}:${{ inputs.helm_chart_version }})"
