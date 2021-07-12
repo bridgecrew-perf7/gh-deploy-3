@@ -4,7 +4,7 @@ on:
     branches: [next]
     types: 
       - completed
-      
+      - requested
 jobs:
   check-requirements:
     runs-on: ubuntu-latest
