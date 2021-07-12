@@ -1,6 +1,6 @@
 on:
   workflow_run:
-    workflows: ["push", "tag"]
+    workflows: ["Push", "Tag"]
     branches: [next]
     types: 
       - completed
