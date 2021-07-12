@@ -2,7 +2,9 @@ on:
   push:
     branches:
     - next
-    
+
+name: Build
+
 jobs:
   check-requirements:
     runs-on: ubuntu-latest
