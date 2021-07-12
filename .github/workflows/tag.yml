@@ -2,7 +2,9 @@ on:
   push:
     tags:
     - '@app/*'
-    
+
+name: Tag
+
 jobs:
   check-requirements:
     runs-on: ubuntu-latest
