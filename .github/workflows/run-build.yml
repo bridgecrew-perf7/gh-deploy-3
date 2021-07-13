@@ -1,0 +1,10 @@
+on:
+  workflow_run:
+    workflows: ["Push"]
+
+jobs:
+  check-requirements:
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "on.workflow_run"
