@@ -2,6 +2,8 @@ on:
   workflow_run:
     workflows: ["Push", "Tag"]
     branches: [next]
+    types: 
+    - completed
 
 jobs:
   check-requirements:
