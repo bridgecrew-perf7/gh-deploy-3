@@ -25,3 +25,4 @@ jobs:
     steps:
     - run: |
         echo "PUSH or TAG workflow failed."
+        exit 1
