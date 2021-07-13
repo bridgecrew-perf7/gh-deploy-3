@@ -5,8 +5,23 @@ on:
     - completed
 
 jobs:
-  check-requirements:
+  change:
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
     - run: |
-        echo "on.workflow_run"
+        echo "on.workflow_run => change
+        
+  build:
+    runs-on: ubuntu-latest
+    needs: [change]
+    steps:
+    - run: |
+        echo "on.workflow_run => build
+        
+  on-failure:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    steps:
+    - run: |
+        echo "PUSH or TAG workflow failed."
