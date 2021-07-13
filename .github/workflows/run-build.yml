@@ -9,8 +9,14 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
+    - uses: actions/checkout@v2
+      with:
+        # @NOTE: to retrieve last tag
+        fetch-depth: 0
     - run: |
         echo "on.workflow_run => change
+        APP_ENVIRONMENT_GROUP=$([[ "$(git rev-parse HEAD)" == "$(git rev-list -n 1 "$(git describe --abbrev=0 --tags || true)")" ]] && echo 'preprod' || echo 'uat')
+        echo ::set-output name=app_env_group::${APP_ENVIRONMENT_GROUP}
         
   build:
     runs-on: ubuntu-latest
