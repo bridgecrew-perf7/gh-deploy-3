@@ -11,4 +11,4 @@ jobs:
     steps:
     - run: |
         echo "on.push.next"
-        exit 1
+        exit 0
