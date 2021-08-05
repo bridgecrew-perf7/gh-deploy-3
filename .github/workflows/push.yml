@@ -26,7 +26,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        APP_ID: ${{ fromJson(needs.changes.outputs.app_ids) }}
+        APP_ID: ${{ fromJson(needs.change.outputs.app_ids) }}
     steps:
     - run: |
         echo "APP_ID: ${{ matrix.APP_ID}}"
