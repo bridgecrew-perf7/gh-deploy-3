@@ -20,6 +20,7 @@ jobs:
     - uses: dorny/paths-filter@v2
       id: filter_apps
       with:
+        base: refs/heads/next
         filters: .github/k8s-apps.yaml
 
     - id: define-env
