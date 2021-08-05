@@ -20,8 +20,13 @@ jobs:
     - uses: dorny/paths-filter@v2
       id: filter_apps
       with:
-        base: refs/heads/next
         filters: .github/k8s-apps.yaml
+    - run: |
+        echo "GITHUB_REF: ${{ github.ref }}"
+        echo "GITHUB_HEAD_REF: ${{ github.head_ref }}"
+        echo "GITHUB_BASE_REF: ${{ github.base_ref }}"
+        echo "GITHUB_SHA: ${{ github.sha }}"
+        echo "GIT_REF: $(git rev-parse HEAD)"
 
     - id: define-env
       run: |
