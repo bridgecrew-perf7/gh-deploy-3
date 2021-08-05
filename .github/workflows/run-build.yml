@@ -16,11 +16,14 @@ jobs:
       with:
         # @NOTE: to retrieve last tag
         fetch-depth: 0
+    - id: define-previous-commit
+      run: |
+        echo ::set-output name=previous_sha::$(git rev-parse HEAD~1)
 
     - uses: dorny/paths-filter@v2
       id: filter_apps
       with:
-        base: ${{ github.sha }}
+        base: ${{ steps.define-previous-commit.outputs.previous_sha }}
         filters: .github/k8s-apps.yaml
 
     - run: |
