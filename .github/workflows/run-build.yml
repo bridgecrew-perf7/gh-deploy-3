@@ -20,6 +20,7 @@ jobs:
     - uses: dorny/paths-filter@v2
       id: filter_apps
       with:
+        base: refs/heads/next
         filters: .github/k8s-apps.yaml
 
     - id: define-env
@@ -30,7 +31,7 @@ jobs:
 
   build-A:
     needs: [change]
-    if: github.event.workflow_run.conclusion == 'success' && contains(needs.changes.outputs.app_ids, 'A')
+    if: github.event.workflow_run.conclusion == 'success' && contains(needs.change.outputs.app_ids, 'A')
     runs-on: ubuntu-latest
     steps:
     - run: |
@@ -38,7 +39,7 @@ jobs:
 
   build-B:
     needs: [change]
-    if: github.event.workflow_run.conclusion == 'success' && contains(needs.changes.outputs.app_ids, 'B')
+    if: github.event.workflow_run.conclusion == 'success' && contains(needs.change.outputs.app_ids, 'B')
     runs-on: ubuntu-latest
     steps:
     - run: |
