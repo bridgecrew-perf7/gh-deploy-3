@@ -15,7 +15,7 @@ jobs:
     - uses: dorny/paths-filter@v2
       id: filter_apps
       with:
-        filters: .github/apps.yml
+        filters: .github/apps.yaml
 
   build:
     needs: [change]
