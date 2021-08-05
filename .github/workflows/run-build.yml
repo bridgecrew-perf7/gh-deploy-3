@@ -1,30 +1,49 @@
 on:
   workflow_run:
     workflows: ["Push", "Tag"]
-    types: 
+    types:
     - completed
 
 jobs:
   change:
-    runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    outputs:
+      app_ids: ${{ steps.filter_apps.outputs.changes }}
+      app_env_group: ${{ steps.define-env.outputs.app_env_group }}
     steps:
     - uses: actions/checkout@v2
       with:
         # @NOTE: to retrieve last tag
         fetch-depth: 0
-    - run: |
+
+    - uses: dorny/paths-filter@v2
+      id: filter_apps
+      with:
+        filters: .github/k8s-apps.yaml
+
+    - id: define-env
+      run: |
         echo "on.workflow_run => change"
         APP_ENVIRONMENT_GROUP=$([[ "$(git rev-parse HEAD)" == "$(git rev-list -n 1 "$(git describe --abbrev=0 --tags || true)")" ]] && echo 'preprod' || echo 'uat')
         echo ::set-output name=app_env_group::${APP_ENVIRONMENT_GROUP}
-        
-  build:
-    runs-on: ubuntu-latest
+
+  build-A:
     needs: [change]
+    if: github.event.workflow_run.conclusion == 'success' && contains(needs.changes.outputs.app_ids, 'A')
+    runs-on: ubuntu-latest
     steps:
     - run: |
-        echo "on.workflow_run => build"
-        
+        echo "Build package: A"
+
+  build-B:
+    needs: [change]
+    if: github.event.workflow_run.conclusion == 'success' && contains(needs.changes.outputs.app_ids, 'B')
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Build package: B"
+
   on-failure:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'failure' }}

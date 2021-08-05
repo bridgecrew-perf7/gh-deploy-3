@@ -6,9 +6,27 @@ on:
 name: Push
 
 jobs:
-  check-requirements:
+  change:
     runs-on: ubuntu-latest
+    outputs:
+      app_ids: ${{ steps.filter_apps.outputs.changes }}
+    steps:
+    - uses: actions/checkout@v2
+    - uses: dorny/paths-filter@v2
+      id: filter_apps
+      with:
+        filters: .github/apps.yml
+
+  build:
+    need: [change]
+    # Check if node_versions matrix is not empty to avoid error message:
+    # "Error when evaluating 'strategy' for job '?'. (Line: ?, Col: ?): Matrix vector '?' does not contain any values"
+    if: ${{ needs.change.outputs.app_envs != '[]' }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        APP_ID: ${{ fromJson(needs.changes.outputs.app_ids) }}
     steps:
     - run: |
-        echo "on.push.next"
-        exit 0
+        echo "APP_ID: ${{ matrix.APP_ID}}"
