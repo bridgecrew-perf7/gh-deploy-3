@@ -30,7 +30,7 @@ jobs:
 
   build-A:
     needs: [change]
-    if: github.event.workflow_run.conclusion == 'success' && contains(needs.changes.outputs.app_ids, 'A')
+    if: github.event.workflow_run.conclusion == 'success' && contains(needs.change.outputs.app_ids, 'A')
     runs-on: ubuntu-latest
     steps:
     - run: |
@@ -38,7 +38,7 @@ jobs:
 
   build-B:
     needs: [change]
-    if: github.event.workflow_run.conclusion == 'success' && contains(needs.changes.outputs.app_ids, 'B')
+    if: github.event.workflow_run.conclusion == 'success' && contains(needs.change.outputs.app_ids, 'B')
     runs-on: ubuntu-latest
     steps:
     - run: |
