@@ -1,0 +1,14 @@
+on:
+  deployment_status:
+
+jobs:
+  status:
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "--"
+        echo "DEPLOYMENT STATUS:"
+        echo "--"
+        env
+        echo "--"
+        jq -r '.' "${GITHUB_EVENT_PATH}"
